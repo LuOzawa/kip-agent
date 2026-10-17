@@ -1,0 +1,18 @@
+# Normalize text
+* text=auto eol=lf
+
+# Binary assets go through Git LFS — never straight into history
+*.zip   filter=lfs diff=lfs merge=lfs -text
+*.tar.gz filter=lfs diff=lfs merge=lfs -text
+*.tgz   filter=lfs diff=lfs merge=lfs -text
+*.7z    filter=lfs diff=lfs merge=lfs -text
+*.dmg   filter=lfs diff=lfs merge=lfs -text
+*.pkg   filter=lfs diff=lfs merge=lfs -text
+*.parquet filter=lfs diff=lfs merge=lfs -text
+*.csv   filter=lfs diff=lfs merge=lfs -text
+*.mp4   filter=lfs diff=lfs merge=lfs -text
+*.model filter=lfs diff=lfs merge=lfs -text
+
+# Cleaner diffs
+*.json  diff=json
+SKILL.md linguist-documentation
