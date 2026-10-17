@@ -19,3 +19,14 @@ jobs:
           python-version: "3.12"
       - name: Validate data/, skills/, packages/
         run: python3 .github/scripts/validate.py
+
+      - name: Smoke-test the example skill
+        run: |
+          python3 skills/csv-to-excel/run.py skills/csv-to-excel/samples/sales.csv /tmp/smoke.xlsx
+          python3 - <<'PY'
+          import zipfile
+          parts = set(zipfile.ZipFile("/tmp/smoke.xlsx").namelist())
+          assert "xl/worksheets/sheet1.xml" in parts, parts
+          assert "xl/worksheets/sheet2.xml" in parts, parts
+          print("workbook parts ok:", len(parts))
+          PY

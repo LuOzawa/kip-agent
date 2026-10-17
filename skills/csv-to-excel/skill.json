@@ -1,0 +1,9 @@
+{
+  "name": "csv-to-excel",
+  "version": "1.1.0",
+  "description": "Convert a CSV file into an .xlsx workbook with a summary sheet of numeric column stats.",
+  "entry": "run.py",
+  "inputs": ["path/to/input.csv"],
+  "outputs": ["path/to/output.xlsx"],
+  "permissions": ["filesystem:read:input.csv", "filesystem:write:output.xlsx"]
+}
