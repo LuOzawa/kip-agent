@@ -13,7 +13,7 @@ skills/<skill-name>/
 
 ## Reference example
 
-`skills/csv-to-excel/` is a complete, runnable skill — copy its layout for new ones: `skill.json`, `SKILL.md`, `run.py`, `samples/`. CI runs it on every pull request, so it also serves as the smoke test for the conventions below.
+`skills/csv-to-excel/` is a complete, runnable skill — copy its layout for new ones: `skill.json`, `SKILL.md`, `run.ts`, `samples/`. It is TypeScript with **zero npm dependencies** on purpose; that is the default we want, because a skill that needs `npm install` cannot be trusted inside a sandbox. CI runs it on every pull request, so it also serves as the smoke test for the conventions below.
 
 ## `skill.json`
 
@@ -22,7 +22,8 @@ skills/<skill-name>/
   "name": "excel-report",
   "version": "1.0.0",
   "description": "Turn a CSV into a formatted Excel report with a summary sheet.",
-  "entry": "run.py",
+  "entry": "run.ts",
+  "runtime": "node",
   "inputs": ["path/to/input.csv"],
   "outputs": ["out/report.xlsx"],
   "permissions": ["filesystem:read", "filesystem:write"]
@@ -35,6 +36,7 @@ skills/<skill-name>/
 | `version` | ✅ | semver `MAJOR.MINOR.PATCH` |
 | `description` | ✅ | one sentence, no marketing |
 | `entry` | ✅ | file that runs the skill |
+| `runtime` | — | `node` / `python` / `bun` / `shell` — anything not listed here is assumed `node` |
 | `inputs` / `outputs` | — | paths or types |
 | `permissions` | — | anything beyond read-only must be declared |
 

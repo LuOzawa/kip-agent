@@ -1,6 +1,6 @@
 # csv-to-excel
 
-Turn a CSV into an `.xlsx` workbook: the raw table on sheet **Data**, and per-numeric-column stats on sheet **Summary**.
+Turn a CSV into an `.xlsx` workbook: the raw table on sheet **Data**, per-numeric-column stats on sheet **Summary**.
 
 ## When to use
 
@@ -20,7 +20,7 @@ Do **not** use it when:
 | output | `.xlsx` with two sheets; defaults to `<input>.xlsx` next to the input |
 
 ```
-python3 run.py samples/sales.csv out/sales-report.xlsx
+node run.ts samples/sales.csv out/sales-report.xlsx
 → wrote out/sales-report.xlsx: 5 rows, 4 columns, 2 numeric column(s)
 ```
 
@@ -31,7 +31,8 @@ Sheets:
 
 ## Behaviour worth knowing
 
-- Cells that cannot be fully parsed as numbers stay text — `0`-prefixed IDs (`007`) and `1e999` are deliberately **not** treated as numeric, so IDs keep their form.
+- Parsing is RFC4180-ish: quoted fields, `""` escapes and commas inside quotes survive (`"Zhang, Wei"` stays one cell).
+- Cells that cannot be parsed as numbers stay text — `0`-prefixed IDs (`007`) and values overflowing to `Infinity` are deliberately **not** numeric, so IDs keep their form.
 - Rows shorter than the header are padded and reported as a warning on stderr.
 - Blank lines are skipped.
 
@@ -46,9 +47,11 @@ Nothing is written when the exit code is non-zero, so a failed run never leaves 
 
 ## Verified on
 
-- 2026-10-18 · Python 3.9 (macOS) and 3.12 (CI) · `samples/sales.csv` → 5 rows, 4 columns, 2 numeric columns; workbook reopened and read back with openpyxl 3.1.5
-- Edge cases exercised: single-column CSV (exit 3), empty file (exit 3), ragged row (padded + warning), missing file (exit 2)
+- 2026-10-18 · Node 26 (`node run.ts`, types stripped natively) and CI Node 24 · `samples/sales.csv` → 5 rows, 4 columns, 2 numeric columns; workbook reopened and read back with openpyxl 3.1.5 (sheets `Data`, `Summary`; header bold; column widths applied)
+- Edge cases exercised: quoted CSV with embedded commas/quotes, leading-zero IDs staying text, ragged row (padded + warning), empty file (exit 3), single-column CSV (exit 3), missing file (exit 2)
 
-## Why stdlib only
+## Why zero dependencies
 
-No `openpyxl`, no `pandas`. The OOXML package is written by hand so the skill runs inside a container that has nothing but Python — the same guarantee the product makes about sandboxed execution.
+No openpyxl, no exceljs. The OOXML package is assembled by hand and compressed with the built-in `node:zlib`; the zip container (local headers, central directory, EOCD, CRC32) is written in `run.ts`.
+
+`package.json` exists only to declare `"type": "module"` — there are no dependencies to install, so the skill runs in a container that has nothing but Node.

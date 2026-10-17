@@ -17,12 +17,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
       - name: Validate data/, skills/, packages/
         run: python3 .github/scripts/validate.py
 
       - name: Smoke-test the example skill
         run: |
-          python3 skills/csv-to-excel/run.py skills/csv-to-excel/samples/sales.csv /tmp/smoke.xlsx
+          node skills/csv-to-excel/run.ts skills/csv-to-excel/samples/sales.csv /tmp/smoke.xlsx
           python3 - <<'PY'
           import zipfile
           parts = set(zipfile.ZipFile("/tmp/smoke.xlsx").namelist())
