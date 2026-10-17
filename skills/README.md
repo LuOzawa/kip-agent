@@ -11,6 +11,10 @@ skills/<skill-name>/
   ...            # implementation (scripts, prompts, assets)
 ```
 
+## Reference example
+
+`skills/csv-to-excel/` is a complete, runnable skill — copy its layout for new ones: `skill.json`, `SKILL.md`, `run.py`, `samples/`. CI runs it on every pull request, so it also serves as the smoke test for the conventions below.
+
 ## `skill.json`
 
 ```json
