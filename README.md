@@ -4,9 +4,9 @@ Shared repository for the KIP Agent team: a place to push branches, datasets, sk
 
 | Path | What goes here |
 |---|---|
-| `data/` | datasets and samples used for demos and evaluation |
-| `skills/` | agent skills and their docs |
-| `packages/` | internal packages and build artifacts worth keeping |
+| [`data/`](data/README.md) | datasets and samples — card + schema required |
+| [`skills/`](skills/README.md) | agent skills — `skill.json` + `SKILL.md` |
+| [`packages/`](packages/README.md) | internal packages — buildable, released by tag |
 | `docs/` | design notes, specs and release checklists |
 
 ## Working here
