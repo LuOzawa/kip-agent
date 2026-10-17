@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+RUNTIMES = {"node", "python", "bun", "shell"}
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.\-]+)?$")
 SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__", "dist", "build"}
 
@@ -89,6 +90,11 @@ def check_skills() -> int:
         for key in ("name", "version", "description", "entry"):
             if not manifest.get(key):
                 errors.append(f"skills/{name}/skill.json: missing '{key}'")
+        runtime = manifest.get("runtime")
+        if runtime and runtime not in RUNTIMES:
+            errors.append(
+                f"skills/{name}/skill.json: runtime '{runtime}' not in {sorted(RUNTIMES)}"
+            )
         if manifest.get("name") and manifest["name"] != name:
             errors.append(f"skills/{name}: skill.json name '{manifest['name']}' != folder '{name}'")
         version = manifest.get("version")
