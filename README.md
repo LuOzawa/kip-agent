@@ -27,4 +27,4 @@ Public: anyone may read, fork and open pull requests. The team reviews and merge
 
 ---
 
-Contact: LuOzawa — linlin700573@gmail.com
+Contact: LuOzawa — lin700573@gmail.com
